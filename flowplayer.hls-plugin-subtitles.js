@@ -13,7 +13,10 @@ flowplayer.engine('hlsjs-lite').plugin(function(data) {
     tracks = [].filter.call(videoTag.textTracks, function(tr) { return tr.kind === 'captions'; });
 
     player.ui.createSubtitleControl(tracks, function(idx) {
-      if (Number(idx) === -1) activeTrack = null;
+      if (Number(idx) === -1) {
+        activeTrack = null;
+        player.hideSubtitle();
+      }
       else activeTrack = tracks[idx];
       player.ui.setActiveSubtitleItem(idx);
     });
