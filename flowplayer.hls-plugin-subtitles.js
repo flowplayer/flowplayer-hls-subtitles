@@ -2,24 +2,26 @@
 flowplayer.engine('hlsjs-lite').plugin(function(data) {
   var common = flowplayer.common
     , videoTag = data.videoTag
-    , player = data.player;
+    , player = data.player
+    , hls = data.hls;
 
   var tracks = []
     , activeTrack;
 
-  data.hls.subtitleDisplay = false;
+  hls.subtitleDisplay = false;
 
   function createControl(tracks) {
     player.ui.createSubtitleControl(tracks, function(idx) {
       if (Number(idx) === -1) {
-        if (activeTrack) activeTrack.mode = 'disabled';
         activeTrack = null;
         player.hideSubtitle();
       }
+      
       else activeTrack = tracks[idx];
       player.ui.setActiveSubtitleItem(idx);
 
-      if (activeTrack) activeTrack.mode = 'hidden';
+      if (activeTrack) hls.subtitleTrack = Number(idx);
+      else hls.subtitleTrack = -1;
     }, {
       controlledExternally: true
     });
