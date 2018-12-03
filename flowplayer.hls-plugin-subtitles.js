@@ -13,6 +13,7 @@ flowplayer.engine('hlsjs-lite').plugin(function(data) {
   function createControl(tracks) {
     player.ui.createSubtitleControl(tracks, function(idx) {
       if (Number(idx) === -1) {
+        if (activeTrack) activeTrack.mode = 'disabled';
         activeTrack = null;
         player.hideSubtitle();
       }
@@ -20,7 +21,10 @@ flowplayer.engine('hlsjs-lite').plugin(function(data) {
       else activeTrack = tracks[idx];
       player.ui.setActiveSubtitleItem(idx);
 
-      if (activeTrack) hls.subtitleTrack = Number(idx);
+      if (activeTrack) {
+        hls.subtitleTrack = Number(idx);
+        activeTrack.mode = 'hidden';
+      }
       else hls.subtitleTrack = -1;
     }, {
       controlledExternally: true
